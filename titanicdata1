@@ -1,0 +1,61 @@
+1.Write a pig script find the average age of male and female persons died in the titanic tragedy
+
+
+titanic = load '/pig/TitanicData.txt' using PigStorage(',') as (Passengerid:int, Survived:int, Pclass:int, Name, Sex:chararray, Age:int, Sibsp:int, Parch:int, Ticket:chararray, Fare:float, Cabin:chararray, Embarked:chararray);
+
+
+fil_titanic = filter titanic by Survived == 1;
+
+
+male = filter fil_titanic by Sex == 'male';
+
+
+female = filter fil_titanic by Sex == 'female';
+
+
+grpm = group male all;
+
+
+grpf = group female all;
+
+
+orderm = foreach grpm generate AVG(male.Age);
+
+
+orderf = foreach grpf generate AVG(female.Age);
+
+
+dump orderm;  
+
+
+dump orderf;
+
+2.Write a pig script to find the number of people died and survived in each class
+
+
+titanic = load '/user/acadgild/titanicdata.txt' using PigStorage(',') as (Passengerid:int, Survived:int, Pclass:int, Name, Sex:chararray, Age:int, Sibsp:int, Parch:int, Ticket:chararray, Fare:float, Cabin:chararray, Embarked:chararray);
+
+
+dead = filter titanic by Survived == 0;
+survived = filter titanic by survived == 1;
+
+
+
+
+grpd = group dead by Pclass;
+
+
+grps = group survived by Pclass;
+
+
+orderd = foreach grpd generate COUNT(dead);
+
+
+orders = foreach grps generate COUNT(survived);
+
+
+dump orderd;  
+
+
+dump orders;
+
